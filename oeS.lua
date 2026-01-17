@@ -28,7 +28,7 @@ end
 
 -- 创建窗口
 local Window = Rayfield:CreateWindow({
-    Name = "攻击脚本控制器",
+    Name = "OE脚本",
     LoadingTitle = "正在加载...",
     LoadingSubtitle = "请稍候",
     ConfigurationSaving = {
@@ -58,7 +58,7 @@ local scriptStates = {
 -- 步枪脚本开关
 MainTab:CreateSection("步枪自动攻击脚本")
 local rifleToggle = MainTab:CreateToggle({
-    Name = "步枪自动攻击 (攻击玩家)",
+    Name = "步枪自动攻击",
     CurrentValue = scriptStates.rifleScript,
     Callback = function(Value)
         scriptStates.rifleScript = Value
@@ -348,13 +348,14 @@ local InfoTab = Window:CreateTab("说明", 4483362458)
 InfoTab:CreateSection("脚本说明")
 InfoTab:CreateParagraph({
     Title = "功能说明",
-    Content = "每个开关对应一个独立的攻击脚本，可以单独启用/禁用：\n\n1. 步枪自动攻击 - 自动攻击其他玩家\n2. 军刀自动攻击 - 自动攻击僵尸\n3. 铲子自动攻击 - 自动攻击僵尸\n4. 无限弹药 - 自动瞄准射击"
+    Content = "每个复活重新开关脚本，可以单独启用/禁用：\n\n1. 步枪自动攻击 - 自动攻击其他玩家\n2. 军刀自动攻击 - 自动攻击僵尸\n3. 铲子自动攻击 - 自动攻击僵尸\n4. 无限弹药 - 自动瞄准射击"
 })
 
 InfoTab:CreateSection("使用提示")
 InfoTab:CreateLabel("• 确保角色装备对应的武器才能生效")
 InfoTab:CreateLabel("• 可以同时启用多个脚本")
 InfoTab:CreateLabel("• 关闭开关会停止对应的脚本")
+InfoTab:CreateLabel("• 建议打开所有功能")
 
 -- 添加关闭窗口按钮
 MainTab:CreateSection("界面控制")
