@@ -1,22 +1,30 @@
 -- Rayfield UI 缝合脚本
-local Rayfield = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/shlexware/Rayfield/main/source"))()
+local Rayfield = nil
+local rayfieldLinks = {
+    "https://raw.githubusercontent.com/shlexware/Rayfield/main/source",
+    "https://sirius.menu/rayfield",
+    "https://raw.githubusercontent.com/Syntaxx64/Rayfield/main/Rayfield"
+}
 
-local Window = Rayfield:CreateWindow({
-    Name = "多功能自动化攻击",
-    LoadingTitle = "脚本加载中...",
-    LoadingSubtitle = "by 脚本作者",
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = "MultiAttackScript",
-        FileName = "Config"
-    },
-    Discord = {
-        Enabled = false,
-        Invite = "noinvitelink",
-        RememberJoins = true
-    },
-    KeySystem = false,
-})
+-- 尝试加载 Rayfield
+for _, link in pairs(rayfieldLinks) do
+    local success, result = pcall(function()
+        return loadstring(game:HttpGetAsync(link))()
+    end)
+    if success then
+        Rayfield = result
+        break
+    end
+end
+
+if not Rayfield then
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "错误",
+        Text = "无法加载 Rayfield UI",
+        Duration = 5
+    })
+    return
+end
 
 -- 获取服务
 local Players = game:GetService("Players")
@@ -59,6 +67,24 @@ local function Notify(title, text, duration)
         Duration = duration or 3
     })
 end
+
+-- 创建窗口
+local Window = Rayfield:CreateWindow({
+    Name = "多功能自动化攻击",
+    LoadingTitle = "脚本加载中...",
+    LoadingSubtitle = "by 脚本作者",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "MultiAttackScript",
+        FileName = "Config"
+    },
+    Discord = {
+        Enabled = false,
+        Invite = "noinvitelink",
+        RememberJoins = true
+    },
+    KeySystem = false,
+})
 
 -- 创建主标签页
 local MainTab = Window:CreateTab("主控制", 4483362458)
@@ -353,7 +379,8 @@ task.spawn(function()
     while true do
         task.wait()
         
-        local Character = LocalPlayer.Character
+        if EnabledScripts.InfiniteAmmo then
+            local Character = LocalPlayer.Character
             if Character then
                 local Weapon = Character:FindFirstChild("Shotgun") or Character:FindFirstChild("Pistol")
                 
@@ -378,3 +405,14 @@ task.spawn(function()
         end
     end
 end)
+
+-- 初始化通知
+Notify("脚本加载成功", "多功能自动化攻击脚本已就绪\n请查看UI界面进行设置")
+
+-- 添加关闭按钮支持
+local CloseButton = MainTab:CreateButton({
+    Name = "关闭界面",
+    Callback = function()
+        Rayfield:Destroy()
+    end,
+})
